@@ -47,38 +47,39 @@ function renderTodo(todo) {
     node.setAttribute('id', todo.id);
     node.setAttribute('class', 'list')
     node.innerHTML = `
-          <input type="checkbox" class="checkbox" id="checkbox-${todo.id}" name="${todo.id}">
-           <label class="todos-list__li" for="${todo.id}">
-           
-             <div class="todos-list__li-icon">
-                <img src="https://drive.google.com/uc?export=view&id=1YPZ4mdK72YVLXOBdrbVS3LELpjvEEzX4" class="todos-list__li-icon-1"/>
+    <input type="checkbox" class="checkbox" id="checkbox-${todo.id}" name="${todo.id}">
+    <label class="todos-list__li" for="${todo.id}">
+    
+      <div class="todos-list__li-icon">
+         <img src="https://drive.google.com/uc?export=view&id=1YPZ4mdK72YVLXOBdrbVS3LELpjvEEzX4" class="todos-list__li-icon-1"/>
 
-                   <svg class="todos-list__li-icon-2" width="28" height="22" viewBox="0 0 30 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                   <path id="tick" d="M2 14.2807L9.81268 22L28 2" stroke="url(#paint0_linear)" stroke-width="3.2"/>
-                   <defs>
-                   <linearGradient id="paint0_linear" x1="28" y1="2" x2="-4.65091" y2="11.0317" gradientUnits="userSpaceOnUse">
-                   <stop stop-color="#01A7DC"/>
-                   <stop offset="1" stop-color="#41C5EF" stop-opacity="0.85"/>
-                   </linearGradient>
-                   </defs>
-                   </svg>
-             </div>
-               
-           <div class="todos-list__li-text">
-                <div class = "todos-list__li-text-1"> ${todo.text}</div>
-                <svg class="todos-list__li-text-2" width="170" height="4" viewBox="0 0 194 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path id="line" d="M0 2L194 2" stroke="url(#paint0_linear)" stroke-width="3.2"/>
-                     <defs>
-                    <linearGradient id="paint0_linear" x1="194" y1="2.00012" x2="0" y2="2.00003" gradientUnits="userSpaceOnUse">
-                    <stop stop-color="#7DCEE8"/>
-                    <stop offset="1" stop-color="#30BDEA"/>
-                    </linearGradient>
-                    </defs>
-                </svg>
-           </div> 
-           
-           <button class="todos-list__li-delete-todo "><i class="fa fa-trash"></i>  </button>
-           </label>
+            <svg class="todos-list__li-icon-2" width="28" height="22" viewBox="0 0 30 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path id="tick" d="M2 14.2807L9.81268 22L28 2" stroke="url(#paint0_linear)" stroke-width="3.2"/>
+            <defs>
+            <linearGradient id="paint0_linear" x1="28" y1="2" x2="-4.65091" y2="11.0317" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#01A7DC"/>
+            <stop offset="1" stop-color="#41C5EF" stop-opacity="0.85"/>
+            </linearGradient>
+            </defs>
+            </svg>
+      </div>
+        
+    <div class="todos-list__li-text">
+         <div class="todos-list__li-text-1">${todo.text}</div>
+         <svg class="todos-list__li-text-2" width="170" height="4" viewBox="0 0 194 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+             <path id="line" d="M0 2L194 2" stroke="url(#paint0_linear)" stroke-width="3.2"/>
+              <defs>
+             <linearGradient id="paint0_linear" x1="194" y1="2.00012" x2="0" y2="2.00003" gradientUnits="userSpaceOnUse">
+             <stop stop-color="#7DCEE8"/>
+             <stop offset="1" stop-color="#30BDEA"/>
+             </linearGradient>
+             </defs>
+         </svg>
+    </div> 
+    
+    <button class="todos-list__li-delete-todo"><i class="fa fa-trash"></i></button>
+    <button class="todos-list__li-edit-todo"><i class="fa fa-edit"></i></button>
+    </label>
         `;
     console.log(node);
     list.append(node);
@@ -171,3 +172,24 @@ function deleteTodo(key) {
 
 
 }
+
+// Function to edit a task
+function editTodo(key) {
+    const index = todoItems.findIndex(item => item.id === Number(key));
+    const todoText = todoItems[index].text;
+    const newText = prompt('Editar tarefa:', todoText);
+    if (newText !== null) {
+        todoItems[index].text = newText;
+        const taskElement = document.getElementById(key);
+        taskElement.querySelector('.todos-list__li-text-1').textContent = newText;
+    }
+}
+
+// Add a click event listener to edit buttons
+list.addEventListener('click', event => {
+    if (event.target.classList.contains('todos-list__li-edit-todo')) {
+        const itemKey = event.target.parentNode.parentNode.id;
+        editTodo(itemKey);
+    }
+});
+
